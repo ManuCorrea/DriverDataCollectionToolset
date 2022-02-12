@@ -30,8 +30,6 @@ def get_directories_from_path(path):
     return directories
 
 
-print(get_files_from_path('.'))
-
 # https://stackoverflow.com/questions/49567637/the-output-of-cv2-videowriter-is-incorrect-its-faster
 def check_frames_per_n_seconds(camera, capture_duration):
     start_time = time.time()

@@ -40,7 +40,7 @@ class Sensor:
             path (str): Path where the data will be saved
             time_entry (int): time entry that will identify the file
         """
-        print(f"Saving the following data: {self.data}")
+        # print(f"Saving the following data: {self.data}")
         np.save(f"{path}/{self.name}_{time_entry}.npy", np.array(self.data))
 
     def read_saved_data(self):

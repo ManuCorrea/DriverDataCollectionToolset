@@ -51,10 +51,11 @@ class Camera:
         return frame
 
     def capture_save_in_video(self):
+        # TODO implement
         pass
 
-    def save_buffer(self):
-        np.save(f"{self.data_name}_{time.time()}.npy", np.array(self.buffer))
+    def save_buffer(self, path, time_entry):
+        np.save(f"{path}/{self.data_name}_{time_entry}.npy", np.array(self.buffer))
         self.buffer = []
 
     def finish(self):
