@@ -42,6 +42,7 @@ class Sensor:
         """
         # print(f"Saving the following data: {self.data}")
         np.save(f"{path}/{self.name}_{time_entry}.npy", np.array(self.data))
+        self.data = []
 
     def read_saved_data(self):
         """
