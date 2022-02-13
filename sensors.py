@@ -52,21 +52,21 @@ class TimeStatus(sensor.Sensor):
         data = {"time": [],
                 "day": []
                 }
-        for recording in get_files_from_path(path):
+        files = get_files_from_path(path)
+        files.sort()
+        for recording in files:
             print(f"Taking recording {recording}")
             # as data:
             read_data = np.load(os.path.join(
                 path, recording), allow_pickle=True)
-            print(read_data)
             for time, day in read_data:
-                print(time)
-                print(day)
-                print(type(time))
-                print(type(day))
+                # print(time)
+                # print(day)
                 data['time'].append(time)
                 data['day'].append(day)
 
-        return json.dumps(data)
+        # return json.dumps(data)
+        return data
 
     def read_and_format_saved_data(self, path):
         pass
