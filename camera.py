@@ -55,7 +55,13 @@ class Camera:
         pass
 
     def save_buffer(self, path, time_entry):
+        # start = time.time()
         np.save(f"{path}/{self.data_name}_{time_entry}.npy", np.array(self.buffer))
+        # print(f'Save: {time.time() - start} seconds')
+        # start = time.time()
+        # np.savez_compressed(f"{path}/cameras/{self.data_name}_{time_entry}.npy",
+        #         np.array(self.buffer))
+        # print(f'Compressed: {time.time() - start} seconds')
         self.buffer = []
 
     def finish(self):

@@ -5,11 +5,6 @@ import time
 import camera
 import sensor
 from typing import List
-# Objecto generate al que le pasamos array de sensores
-# array de camaras
-# intervalo de captura
-# duración
-# usar threads para los sensores?
 
 class DataCapture:
     def __init__(self, cameras: List[camera.Camera], camera_save_mode, sensors: List[sensor.Sensor], path, batchs=None) -> None:
@@ -37,15 +32,15 @@ class DataCapture:
                 sensor.capture()
         # batches finished
         # save camera data
-        for cam in self.cameras:
+        for cam, cam_path in zip(self.cameras, self.cameras_paths):
             if self.camera_save_mode == 'numpy':
-                print(f'Saving camera in path  {self.path}')
-                cam.save_buffer(self.path, time_entry)
+                print(f'Saving camera in path  {cam_path}')
+                cam.save_buffer(cam_path, time_entry)
 
         # save sensor data
-        for sensor in self.sensors:
-            print(f'Saving sensor in path  {self.path}')
-            sensor.save(self.path, time_entry)
+        for sensor, sensor_path in zip(self.sensors, self.sensors_paths):
+            print(f'Saving sensor in path  {sensor_path}')
+            sensor.save(sensor_path, time_entry)
         
 
     def done(self):
@@ -56,4 +51,16 @@ class DataCapture:
         Path(self.path).mkdir(parents=True, exist_ok=True)
         self.path = os.path.join(self.path, str(int(time.time())))
         Path(self.path).mkdir(parents=True, exist_ok=True)
+        cameras_path = os.path.join(self.path, "cameras")
+        sensors_path = os.path.join(self.path, "sensors")
+        Path(cameras_path).mkdir(parents=True, exist_ok=True)
+        Path(sensors_path).mkdir(parents=True, exist_ok=True)
+
+        self.cameras_paths = [os.path.join(cameras_path, cam.data_name) for cam in self.cameras]
+        self.sensors_paths = [os.path.join(sensors_path, sensor.name) for sensor in self.sensors]
+
+        for cam_folder in self.cameras_paths:
+            Path(cam_folder).mkdir(parents=True, exist_ok=True)
+        for sensor_folder in self.sensors_paths:
+            Path(sensor_folder).mkdir(parents=True, exist_ok=True)
     

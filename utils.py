@@ -65,6 +65,6 @@ def count_cameras(max_to_test=4):
         return i
 
 
-def numpy_cam_file_reader(file):
+def numpy_file_reader(file):
     file = np.load(file)
     return file
