@@ -3,6 +3,7 @@ import json
 import numpy as np
 from utils import get_files_from_path
 import os
+import struct
 
 """
 Use me as a template for your sensor!
@@ -69,4 +70,44 @@ class TimeStatus(sensor.Sensor):
         return data
 
     def read_and_format_saved_data(self, path):
+        pass
+
+
+class ArduinoSense(sensor.Sensor):
+    def __init__(self, sensor_name=None) -> None:
+        super().__init__(sensor_name)
+
+    def initialize(self):
+        import serial
+
+        PORT = '/dev/ttyACM0'
+        BAUDRATE = 9600
+        self.ser = serial.Serial(PORT, BAUDRATE)
+
+    def get_data(self):
+        self.ser.write(b'\x00')
+        temperature =self.ser.read(4)
+        humidity = self.ser.read(4)
+        temperature = struct.unpack('f', temperature)[0]
+        return [temperature, humidity]
+
+    def read_saved_data(self, path):
+        data = {"temperature": [],
+                "humidity": []
+        }
+        files = get_files_from_path(path)
+        files.sort()
+        for recording in files:
+            read_data = np.load(os.path.join(
+                path, recording), allow_pickle=True)
+            for temperature, humidity in read_data:
+                # print(temperature)
+                # print(humidity)
+                data['temperature'].append(temperature)
+                data['humidity'].append(humidity)
+
+        # return json.dumps(data)
+        return data
+
+    def read_and_format_saved_data(self):
         pass
