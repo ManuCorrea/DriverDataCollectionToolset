@@ -13,15 +13,33 @@ class Skeleton(sensor.Sensor):
         super().__init__(sensor_name)
 
     def initialize(self):
+        """
+        This function will be used to initialize the sensor if required.
+        E.g.: initialize sensor over serial, import required libraries, set up configuration...
+        """
         pass
 
     def get_data(self):
+        """
+        This function will get the data of the sensor
+        """
         pass
 
     def read_saved_data(self):
+        """
+        OVERRIDE
+        Reads the data and returns it
+        Returns:
+            # TODO: decide whether or not it must be predefined
+            # or choosen by the user
+            # If predefined will be better for data visualization part.
+        """
         pass
 
     def read_and_format_saved_data(self):
+        """
+        Reads and format saved data for use with TF/PyTorch frameworks
+        """
         pass
 
 

@@ -8,7 +8,19 @@ from typing import List
 
 
 class DataCapture:
-    def __init__(self, cameras: List[camera.Camera], camera_save_mode, sensors: List[sensor.Sensor], path, batchs=None, frames_per_sensor_capture=1, sensors_refresh_rate=None) -> None:
+    def __init__(self, cameras: List[camera.Camera], camera_save_mode, sensors: List[sensor.Sensor], path, batchs=1, frames_per_sensor_capture=1, sensors_refresh_rate=None) -> None:
+        """This class will provide easy capture of the given camera/s and sensor/s.
+
+        Args:
+            cameras (List[camera.Camera]): list of the desired camera objects to capture
+            camera_save_mode (str): numpy or video
+            sensors (List[sensor.Sensor]): list of the desired sensor objects to capture
+            path (str): path where the data will be saved
+            batchs (int, optional): Defines the number of camera captures per numpy file. Defaults to 1.
+            frames_per_sensor_capture (int, optional): Defines the number of captured frames per sensor capture. Defaults to 1.
+            sensors_refresh_rate (List[int], optional): It will give the refresh rate of each sensor given in sensors arg,
+                                                        must be same size and the time will be defined in the same order. Defaults to None.
+        """
         self.cameras = cameras
         self.camera_save_mode = camera_save_mode
         self.sensors = sensors
@@ -27,6 +39,10 @@ class DataCapture:
         self.create_folder()
 
     def capture_with_frame_rate(self):
+        """
+        This method will capture the data when no refresh rate is provided.
+        It will capture n (frames_per_sensor_capture) frames per sensor capture
+        """
         time_entry = int(time.time())
         for _ in range(self.batchs):
             # capture cameras data
@@ -53,6 +69,9 @@ class DataCapture:
             sensor.save(sensor_path, time_entry)
 
     def capture_with_refresh_rate(self):
+        """
+        This method will capture the sensors according the refresh rate provided to each sensor
+        """
         time_entry = int(time.time())
 
         for _ in range(self.batchs):
@@ -88,10 +107,16 @@ class DataCapture:
             sensor.save(sensor_path, time_entry)
 
     def done(self):
+        """
+        call when finished
+        """
         for cam in self.cameras:
             cam.finish()
 
     def create_folder(self):
+        """
+        Creates the necesaries directories for saving the different data and its numpy files.
+        """
         Path(self.path).mkdir(parents=True, exist_ok=True)
         self.path = os.path.join(self.path, str(int(time.time())))
         Path(self.path).mkdir(parents=True, exist_ok=True)
