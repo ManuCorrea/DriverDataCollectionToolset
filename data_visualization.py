@@ -5,10 +5,10 @@ from utils import numpy_file_reader, get_directories_from_path, get_files_from_p
 
 import sensors
 
-timeframe = 1644878542
+timeframe = 1644915411
 DATA_PATH = 'dataset/' +str(timeframe)
 time_status_sensor = sensors.TimeStatus()
-arduino = sensors.ArduinoSense()
+# arduino = sensors.ArduinoSense()
 
 
 cameras_path = os.path.join(DATA_PATH, 'cameras')
@@ -31,8 +31,8 @@ for cam_name, sensor_name in zip(cameras, sensors):
     data_records_camera = get_files_from_path(cam_path)
     data_records_sensor = get_files_from_path(sensor_path)
     print("reading " + sensor_path)
-    # sensor_data = time_status_sensor.read_saved_data(sensor_path)
-    sensor_data = arduino.read_saved_data(sensor_path)
+    sensor_data = time_status_sensor.read_saved_data(sensor_path)
+    # sensor_data = arduino.read_saved_data(sensor_path)
     idx = 0
     # print(sensor_data)
     # print('\n')
@@ -49,7 +49,7 @@ for cam_name, sensor_name in zip(cameras, sensors):
             # cv2.putText(img, str(
             #     sensor_data['time'][idx]), (10, 500), font, 4, (255, 255, 255), 2, cv2.LINE_AA)
             cv2.putText(img, str(
-                sensor_data['temperature'][idx]), (10, 500), font, 4, (255, 255, 255), 2, cv2.LINE_AA)
+                sensor_data['time'][idx]), (10, 500), font, 4, (255, 255, 255), 2, cv2.LINE_AA)
             cv2.imshow('Visualization', img)
             if cv2.waitKey(20) == ord('q'):
                 break
