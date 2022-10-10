@@ -38,6 +38,11 @@ class Camera:
             exit()
 
     def capture(self):
+        """Reads from camera a frame
+
+        Returns:
+            numpy.ndarray: frame either grayscale or BGR
+        """
         ret, frame = self.cap.read()
         # if frame is read correctly ret is True
         if not ret:
@@ -46,7 +51,11 @@ class Camera:
         return frame
 
     def capture_save_in_buffer(self):
+        """
+        Takes a capture from the camera and save it into object's buffer
+        """
         frame = self.capture()
+        print(type(frame))
         self.buffer.append(frame)
         return frame
 
@@ -55,6 +64,12 @@ class Camera:
         pass
 
     def save_buffer(self, path, time_entry):
+        """Saves and deletes object buffer
+
+        Args:
+            path (str): Desired parent path for saving the data
+            time_entry (int): It will identify the numpy file
+        """
         # start = time.time()
         np.save(f"{path}/{self.data_name}_{time_entry}.npy", np.array(self.buffer))
         # print(f'Save: {time.time() - start} seconds')
@@ -65,6 +80,9 @@ class Camera:
         self.buffer = []
 
     def finish(self):
+        """
+        Free up camera resources
+        """
         self.cap.release()
 
     def set_video(self):
@@ -72,5 +90,11 @@ class Camera:
         out = cv.VideoWriter(f'{self.data_name}.avi', fourcc, 20.0, (640, 480))
 
     def set_resolution(self, width, height):
+        """Sets camera resolution
+
+        Args:
+            width (int)
+            height (int)
+        """
         self.width = self.cap.set(cv.CAP_PROP_FRAME_WIDTH, width)
         self.heigh = self.cap.set(cv.CAP_PROP_FRAME_HEIGHT, height)

@@ -47,9 +47,12 @@ class Sensor:
     def read_saved_data(self):
         """
         OVERRIDE
-        Reads the data and returns it in JSON formated str
+        Reads the data and returns it
         Returns:
-            JSON formatted str
+            # TODO: decide whether or not it must be predefined
+            # or choosen by the user
+            # If predefined will be better for data visualization part.
+
         """
         pass
 
